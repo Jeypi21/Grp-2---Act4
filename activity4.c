@@ -39,7 +39,7 @@ void mainMerge(int arr[], int size){
 //--------------------------------------------------------
 //This is for Search Array Function
 void searchLinear(int arr[], int size) {
-	int findValue, pos = -1;
+	int findValue, pos = -1, i;
 
 	printf("\nEnter value to search: ");
 	scanf("%d", &findValue);
@@ -56,12 +56,56 @@ void searchLinear(int arr[], int size) {
 	} else {
 		printf("\nValue found at position: %d\n", pos);
 	}
+
+    //sort to get the maximum and minimum values
+    for (int i = 0; i < size - 1; i++) {
+
+        for (int j = 0; j < size - 1 - i; j++) {
+
+            if (arr[j] > arr[j + 1]) {  
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\nThe minimum value is: %d", arr[0]);
+    printf("\nThe maximum value is: %d\n", arr[size - 1]);
 }
 
 void searchBinary(int arr[], int size) {
 	int search, first, middle, last;
+    char sortConfirm;
 
-	printf("Enter the value to search: ");
+    printf("\nBinary search requires a sorted array!\n");
+
+        printf("\nDo you want to sort it?(y/n): ");
+        scanf(" %c", &sortConfirm);
+
+        if (sortConfirm == 'y' || sortConfirm == 'Y'){
+            for (int i = 0; i < size - 1; i++) {
+                for (int j = 0; j < size - 1 - i; j++) {
+                    if (arr[j] > arr[j + 1]) {  // Swap only if needed
+                        int temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
+            }
+
+            printf("\nSorted Array: \n");
+
+            for (int i = 0; i < size; i++){
+                printf("%d  ", arr[i]);
+            }
+
+            printf("\n");
+        } else {
+            printf("\nYou can proceed.\n");
+        }
+
+	printf("\nEnter the value to search: ");
 	scanf("%d", &search);
 
 	first = 0;
@@ -73,14 +117,15 @@ void searchBinary(int arr[], int size) {
 		if (arr[middle] < search) {
 			first = middle + 1;
 		} else if (arr[middle] == search) {
-			printf("%d is present at index %d.\n", search, middle);
+			printf("\n%d is present at index %d.\n", search, middle);
+            printf("\n%d is present at position %d in the array.\n", search, middle + 1);
 			return;
 		} else {
 			last = middle - 1;
 		}
 	}
 
-	printf("Not found! %d is not present in the list.\n", search);
+	printf("\nNot found! %d is not present in the list.\n", search);
 }
 
 void searchMain(int arr[], int size) {
@@ -91,20 +136,7 @@ void searchMain(int arr[], int size) {
 
 	if (pickSearch == 1) {
 		searchLinear(mergeArray, arraySize);
-
-		printf("\nPick the type of linear search (Min. - 1 / Max. - 2): ");
-		scanf("%d", &pickLinearSearch);
-
-		if (pickLinearSearch == 1) {
-			// Implement minimum search here
-		} else if (pickLinearSearch == 2) {
-			// Implement maximum search here
-		} else {
-			printf("\nInvalid Input.\n");
-		}
 	} else if (pickSearch == 2) {
-		// Ensure the array is sorted before binary search
-		printf("\n\nBinary search requires a sorted array!\n");
 		searchBinary(mergeArray, arraySize);
 	} else {
 		printf("\nInvalid Input.\n");
@@ -115,14 +147,14 @@ void searchMain(int arr[], int size) {
 //This is for Sort Array Function
 void sortBubble(int arr[], int size) {
     printf("\nBubble Sorted Array:\n");
-    for (int pick = 0; pick < size - 1; pick++) {
+    for (int i = 0; i < size - 1; i++) {
 
-        for (int i = 0; i < size - 1 - pick; i++) {
+        for (int j = 0; j < size - 1 - i; j++) {
 
-            if (arr[i] > arr[i + 1]) {  // Swap only if needed
-                int temp = arr[i];
-                arr[i] = arr[i + 1];
-                arr[i + 1] = temp;
+            if (arr[j] > arr[j + 1]) {  // Swap only if needed
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
             }
         }
     }
@@ -138,7 +170,6 @@ void sortSelection(int arr[], int size) {
 
     for (int i = 0; i < size - 1; i++) {
         position = i;
-
         for (int j = i + 1; j < size; j++) {
             if (arr[position] > arr[j]) {
                 position = j;
@@ -183,7 +214,6 @@ int main() {
     int seSo;
     char tryAgain;
 
-    do {
         printf("\nEnter values for Array N:\n");
         for (int i = 0; i < 5; i++) {
             scanf("%d", &arrayN[i]);
@@ -196,7 +226,8 @@ int main() {
 
         // Merge arrays before searching/sorting
         mainMerge(mergeArray, arraySize);
-
+    
+    do {
         printf("\n\nPick whether to SEARCH or SORT the array (SEARCH - 1 / SORT - 2): ");
         scanf("%d", &seSo);
 
@@ -212,7 +243,7 @@ int main() {
         scanf(" %c", &tryAgain);
     } while (tryAgain == 'Y' || tryAgain == 'y');
 
-    printf("\nCongrats!\n");
+    printf("\nThank you for using our program!\n");
 
     return 0;
 }
